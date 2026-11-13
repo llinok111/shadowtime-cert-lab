@@ -1,0 +1,77 @@
+{
+  "command": "node bench/bench.mjs",
+  "data": {
+    "scenes": 12,
+    "triangles": 660
+  },
+  "coldStartMs": 6.020908,
+  "samples": 15,
+  "loopsPerSample": 2000,
+  "certificate": {
+    "min": 0.293050258,
+    "median": 0.297450585,
+    "p95": 0.382302734,
+    "max": 0.382302734,
+    "mean": 0.31327803726666664,
+    "stddev": 0.02969710334903547,
+    "relStddev": 0.09479471848119657,
+    "samples": 15,
+    "perSceneMedianMs": 0.02478754875
+  },
+  "queryAt": {
+    "min": 20.4583704,
+    "median": 20.7175586,
+    "p95": 24.6714311,
+    "max": 24.6714311,
+    "mean": 21.30977722,
+    "stddev": 1.1590673318532487,
+    "relStddev": 0.054391339706987736,
+    "samples": 15,
+    "perQueryUs": 10.3587793
+  },
+  "timeScale": {
+    "min": 0.29251024000000003,
+    "median": 0.29831898,
+    "p95": 0.47735331999999997,
+    "max": 0.47735331999999997,
+    "mean": 0.312880216,
+    "stddev": 0.04479704202094967,
+    "relStddev": 0.14317633308252917,
+    "samples": 15
+  },
+  "baseline60Hz": {
+    "min": 0.90619646,
+    "median": 0.91257306,
+    "p95": 1.08876104,
+    "max": 1.08876104,
+    "mean": 0.932431652,
+    "stddev": 0.048055574815177936,
+    "relStddev": 0.051537905981743674,
+    "samples": 15
+  },
+  "speedupVsFrameSampling": 3.0679820649873664,
+  "intervals": {
+    "total": 52,
+    "subFrame": 4,
+    "missedBy60Hz": 1
+  },
+  "repair": {
+    "targetSeconds": 0.016666666666666666,
+    "scenesNeedingSpeedup": 11,
+    "speeds": {
+      "gate-thin": 6.0918469173985805,
+      "comb-dense": 5.174324636342644,
+      "slalom-height": 6.526253158827241,
+      "offset-z": 6.106096165003628,
+      "no-shadow": 1,
+      "random-0": 5.120642981734398,
+      "random-1": 5.733536778043448,
+      "random-2": 7.088621848641315,
+      "random-3": 6.35211155584666,
+      "short-path": 11.73768707482993,
+      "three-needles": 5.785205892265912,
+      "area-grid": 5.365336065273865
+    }
+  },
+  "note": "Timing in ms for one whole-dataset pass (12 scenes). Cold start is the first uncached call."
+}

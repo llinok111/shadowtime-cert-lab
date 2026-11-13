@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>shadowtime-cert-lab — continuous shadow intervals</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background: #05070c; color: #dbe7ff; overflow: hidden; }
+    #app { position: fixed; inset: 0; }
+    #hud { position: fixed; top: 14px; left: 14px; width: 330px; padding: 14px 16px;
+      background: rgba(8, 13, 24, .86); border: 1px solid #243653; border-radius: 12px;
+      backdrop-filter: blur(8px); }
+    h1 { font-size: 16px; margin: 0 0 4px; letter-spacing: .2px; }
+    .sub { color: #8fa3c4; font-size: 11px; margin-bottom: 10px; }
+    label { display: block; color: #8fa3c4; font-size: 11px; margin-top: 9px; }
+    select, button, input[type=range] { width: 100%; }
+    select, button { background: #101b2d; color: #dbe7ff; border: 1px solid #2b4166;
+      border-radius: 7px; padding: 6px 8px; font: inherit; }
+    button { cursor: pointer; }
+    button:hover { border-color: #4f7fc4; }
+    .row { display: flex; gap: 8px; margin-top: 9px; }
+    .row > * { flex: 1; }
+    .kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin-top: 12px;
+      font-variant-numeric: tabular-nums; font-size: 12px; }
+    .kv span:nth-child(odd) { color: #8fa3c4; }
+    .ok { color: #6ee7a8; }
+    .warn { color: #ffb454; }
+    #timeline { position: fixed; left: 14px; right: 14px; bottom: 14px; height: 92px;
+      background: rgba(8, 13, 24, .9); border: 1px solid #243653; border-radius: 12px; }
+    #foot { position: fixed; right: 18px; bottom: 116px; color: #7086a8; font-size: 10px; }
+    canvas { display: block; width: 100%; height: 100%; border-radius: 12px; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="hud">
+    <h1>shadowtime-cert-lab</h1>
+    <div class="sub">exact continuous shadow intervals · point light · node-verified core</div>
+    <label for="scene">scene</label>
+    <select id="scene"></select>
+    <label for="speed">playback speed <b id="speedv">1.00×</b></label>
+    <input id="speed" type="range" min="0.1" max="6" step="0.05" value="1" />
+    <div class="row">
+      <button id="play">pause</button>
+      <button id="reset">reset</button>
+    </div>
+    <div class="kv">
+      <span>t</span><span id="t">0.000</span>
+      <span>state</span><span id="state">—</span>
+      <span>intervals</span><span id="iv">—</span>
+      <span>shadow measure</span><span id="measure">—</span>
+      <span>longest sojourn</span><span id="maxiv">—</span>
+      <span>speed for 16.7 ms</span><span id="repair">—</span>
+      <span>60 Hz misses</span><span id="miss">—</span>
+    </div>
+  </div>
+  <div id="timeline"><canvas id="tl"></canvas></div>
+  <div id="foot">top: exact closed-form union · bottom: 60 Hz frame samples</div>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
