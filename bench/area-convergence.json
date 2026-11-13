@@ -1,0 +1,54 @@
+{
+  "scene": "area-grid",
+  "samples": 4096,
+  "referenceK": 1024,
+  "rows": [
+    {
+      "K": 4,
+      "grid": "2x2",
+      "l1": 0.01380157470703125,
+      "maxAbs": 0.25,
+      "anyShadowMeasure": 0.24873638296092648,
+      "fullShadowMeasure": 0.19502918131709346,
+      "segments": 15
+    },
+    {
+      "K": 16,
+      "grid": "4x4",
+      "l1": 0.00681304931640625,
+      "maxAbs": 0.125,
+      "anyShadowMeasure": 0.26370254197246806,
+      "fullShadowMeasure": 0.18211550043966282,
+      "segments": 41
+    },
+    {
+      "K": 64,
+      "grid": "8x8",
+      "l1": 0.00341033935546875,
+      "maxAbs": 0.0625,
+      "anyShadowMeasure": 0.27118562147823827,
+      "fullShadowMeasure": 0.17565866000094768,
+      "segments": 79
+    },
+    {
+      "K": 256,
+      "grid": "16x16",
+      "l1": 0.00171661376953125,
+      "maxAbs": 0.03125,
+      "anyShadowMeasure": 0.27492716123112393,
+      "fullShadowMeasure": 0.17243023978158986,
+      "segments": 195
+    },
+    {
+      "K": 1024,
+      "grid": "32x32",
+      "l1": 0,
+      "maxAbs": 0,
+      "anyShadowMeasure": 0.27679793110756656,
+      "fullShadowMeasure": 0.17081602967191092,
+      "segments": 401
+    }
+  ],
+  "logLogSlope": -0.5009985924075259,
+  "note": "L1/mean |coverage_K - coverage_1024| over t; each K profile is exact for its own K-point model."
+}

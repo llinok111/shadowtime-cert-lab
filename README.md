@@ -23,6 +23,7 @@ The browser page moves the receiver along the path, draws the exact union as a t
 node tools/gen-sample.mjs      # deterministic data/scenes.json (12 scenes, 660 tris)
 node bench/verify.mjs          # behavioural assertions, exits 0
 node bench/bench.mjs           # 15 samples + cold start -> bench/result.json
+node bench/area-convergence.mjs # K-point area light -> continuum error law
 
 # visual layer (static server; three.js comes from a pinned CDN importmap)
 python3 -m http.server 4173
@@ -45,6 +46,7 @@ No install step, no bundler, no `node_modules`. Node ≥ 20.
 | scale invariance 1e-6 … 1e6 | max interval-endpoint drift **6.1e-16**, measure drift 6.1e-16 |
 | uniform repair | 11/11 scenes meet the 16.67 ms budget; exact speed 5.12×–11.74×; one step slower violates in 11/11 |
 | K=16 area light | coverage profile matches 4,000 independent samples with **0** mismatches (exact for the K-point model) |
+| K → continuum (area-grid, 4,096 t) | L1 coverage error at K=16 **0.68%**, max local 12.5%; log-log slope **−0.501** vs K=1024 (4→16→64→256), so the K-point model converges but is not the continuous rectangle |
 
 Reproduce each number with `node bench/verify.mjs` and `node bench/bench.mjs`. Timing noise is reported: certificate runs are sub-millisecond, so `relStddev` is 9.5% at 0.297 ms; the baseline is 5.2%.
 
@@ -54,11 +56,11 @@ Frame sampling at 60 Hz observes 60 instants. A 2.61 ms shadow event can sit ent
 
 ## 本轮创新
 
-**B 档：把“阴影”从逐帧布尔值变成连续时间上的精确区间证书，并给出可执行的最短时间缩放。** Existing three.js shadow maps compute a boolean per rendered frame; `toi-cert-lab` computes triangle-pair TOI (not visibility); `labeltime-cert-lab` does 2D label rectangles. This is the first continuous-time shadow-volume certificate here: shadow-cone half-space clipping in `t`, sub-frame event detection, per-triangle attribution, and a minimal uniform time rescale that provably brings every shadow sojourn under a frame budget. The numbers are recomputable in node and shown live in the browser from the same core.
+**B 档：把“阴影”从逐帧布尔值变成连续时间上的精确区间证书，并给出可执行的最短时间缩放。** Existing three.js shadow maps compute a boolean per rendered frame; `toi-cert-lab` computes triangle-pair TOI (not visibility); `labeltime-cert-lab` does 2D label rectangles. This is the first continuous-time shadow-volume certificate here: shadow-cone half-space clipping in `t`, sub-frame event detection, per-triangle attribution, and a minimal uniform time rescale that provably brings every shadow sojourn under a frame budget. It also measures the K-point area-light model's convergence law (L1 ∝ K^−0.501, 0.68% at K=16), instead of presenting a sampled light as a continuous one. The uniform speed ratio is also the **minimum possible peak speed** for any schedule meeting the budget: each interval independently requires speed ≥ duration/budget, so no non-uniform retiming can lower the peak. The numbers are recomputable in node and shown live in the browser from the same core.
 
 ## Model and known limits
 
-1. **Point light, hard shadows only.** The area-light path is exact for a finite K-point grid (K=16 here), not for a continuous rectangle; `coverageProfile` must not be read as an area-light ground truth.
+1. **Point light, hard shadows only.** The area-light path is exact for a finite K-point grid (K=16 here), not for a continuous rectangle. Measured convergence: L1 error 0.68% at K=16, 0.34% at K=64, 0.17% at K=256; log-log slope −0.501. Max local coverage error at K=16 is 12.5% (1/8), so `coverageProfile` is a quantified K-point model, not area-light ground truth.
 2. **Measure-zero boundaries are not violations.** A path tangent to a shadow boundary contributes zero time measure. The certificate reports closed intervals; a single instant of tangency is not counted as a sojourn.
 3. **One disclosed tolerance:** `LIGHT_PLANE_REL_EPS = 1e-9` treats triangles nearly edge-on to the light (signed light-plane height / (normal length × furthest vertex distance) < 1e-9) as zero-volume shadows and reports them as `degenerate` instead of guessing. The 12 sample scenes contain 0 degenerate triangles; the verifier constructs two and checks the refusal.
 4. **Repair family is uniform time scaling**, not path offset or non-uniform retiming. The returned ratio is minimal among constant speeds ≥ 1×; it is not a globally optimal trajectory.
@@ -77,6 +79,7 @@ baseline/sampled.mjs  naive 60 Hz frame sampler (the comparison baseline)
 tools/gen-sample.mjs  deterministic scene generator
 bench/verify.mjs      assertions with printed measured values
 bench/bench.mjs       cold start + 15 samples -> bench/result.json
+bench/area-convergence.mjs  K-point area-light error law
 data/scenes.json      generated, 12 scenes / 660 triangles
 ```
 
